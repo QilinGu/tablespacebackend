@@ -1,13 +1,9 @@
 package main
 
 import (
-    "bytes"
-    "fmt"
     "log"
     "net/http"
     "os"
-    "strconv"
-    "time"
     "database/sql"
     _ "github.com/lib/pq"
 )
@@ -22,6 +18,8 @@ func main() {
 }
 
 func startDatabase(w http.ResponseWriter, r *http.Request){
+	var err error
+    var errd error
 	db, errd = sql.Open("postgres", os.Getenv("DATABASE_URL"))
     if errd != nil {
         log.Fatalf("Error opening database: %q", errd)
