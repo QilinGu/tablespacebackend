@@ -18,7 +18,6 @@ func main() {
 }
 
 func startDatabase(w http.ResponseWriter, r *http.Request){
-	var err error
     var errd error
 	db, errd = sql.Open("postgres", os.Getenv("DATABASE_URL"))
     if errd != nil {
