@@ -22,7 +22,3 @@ func startDatabase(){
         log.Fatalf("Error opening database: %q", errd)
     }
 }
-
-func hello(w http.ResponseWriter, r *http.Request) {
-    w.Write([]byte("hello!"))
-}
