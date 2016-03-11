@@ -85,7 +85,7 @@ func getMenu(c *gin.Context) {
 
     defer restaurantidrows.Close()
     for restaurantidrows.Next() {
-        var menuid id
+        var menuid int
         if err := restaurantidrows.Scan(&menuid); err != nil {
           c.String(http.StatusInternalServerError,
             fmt.Sprintf("Error scanning menus: %q", err))
@@ -95,7 +95,7 @@ func getMenu(c *gin.Context) {
         //Get menus associated with previous menu ids
 
         //Get food items associated with current menu id
-        c.String(http.StatusOK, fmt.Sprintf("Read from DB: %s\n", string(menuid))
+        c.String(http.StatusOK, fmt.Sprintf("Read from DB: %s\n", string(menuid)))
 
     }
 }
