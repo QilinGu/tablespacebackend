@@ -1,14 +1,12 @@
 package main
 
 import (
-    "bytes"
-    "fmt"
     "log"
     "net/http"
     "os"
-    "strconv"
-    "time"
     "database/sql"
+    "fmt"
+    "strconv"
 
     "github.com/gin-gonic/gin"
     _ "github.com/lib/pq"
@@ -16,51 +14,88 @@ import (
 
 var (
     db     *sql.DB = nil
-    router gin;
+    errd error;
 )
 
 func main() {
 
-	var err error
-    var errd error
     port := os.Getenv("PORT")
 
     if port == "" {
         log.Fatal("$PORT must be set")
     }
 
-    //Parse http
+    //Connect to db
+	connectToDb();
 
-    router = gin.New()
+	//Parse http
+    router := gin.New()
     router.Use(gin.Logger())
     router.Static("/static", "static")
 
-    router.GET("/menu", func(c *gin.Context) {
-        c.String(http.StatusOK, string([]byte("**hi!**")))
+    router.GET("/", func(c *gin.Context) {
+        c.String(http.StatusOK, string([]byte("You've reached the root directory of Tablespace!")))
        
     })
 
+    router.GET("/welcome/:retrievedname", func(c *gin.Context) {
+    	name := c.Param("retrievedname")
+        c.String(http.StatusOK, "Hello %s\n", name)
+        c.String(http.StatusOK, string([]byte("You've reached the hello directory of Tablespace!")))
+       
+    })
 
-	//Connect to db
-	connectToDb();
+    router.GET("/menus/:restaurantid", getMenu)
 
+    router.Run(":" + port)
 
- //If http request is for menu data
- 	//Get menu ids associated with restaurant
- 		//Get menus associated with previous menu ids
- 			//Get food items associated with current menu id
+	 //If http request is for menu data
+	 	//Get menu ids associated with restaurant
+	 		//Get menus associated with previous menu ids
+	 			//Get food items associated with current menu id
 
- //Generate array of menus
- //Convert array into json
- //Return json array
+	 //Generate array of menus
+	 //Convert array into json
+	 //Return json array
 
  }
 
 func connectToDb(){
 
-	db, errd = sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	db, errd = sql.Open("postgres", os.Getenv("DATABASE_URL") + "?sslmode=disable")
     if errd != nil {
         log.Fatalf("Error opening database: %q", errd)
     }
 
+}
+
+func getMenu(c *gin.Context) {
+
+	//Gets restaurant id from parameter in path ("<servername>/menus/restaurantid")
+	restaurantid,err := strconv.ParseInt(c.Param("restaurantid"), 0, 64)
+	if err != nil{
+		c.String(http.StatusInternalServerError,
+            fmt.Sprintf("Error with restaurant id input: %q", err))
+        return
+	}
+	rows, err := db.Query("SELECT menuid FROM restaurantmenus WHERE restaurantid = ?", restaurantid)
+    if err != nil {
+        c.String(http.StatusInternalServerError,
+            fmt.Sprintf("Error reading restaurant: %q", err))
+        return
+    }
+
+    defer rows.Close()
+    for rows.Next() {
+        var menuid string
+        if err := rows.Scan(&menuid); err != nil {
+          c.String(http.StatusInternalServerError,
+            fmt.Sprintf("Error scanning ticks: %q", err))
+            return
+        }
+        c.String(http.StatusOK, fmt.Sprintf("Read from DB: %s\n", menuid))
+    }
+    if err := rows.Err(); err != nil {
+            log.Fatal(err)
+    }
 }
