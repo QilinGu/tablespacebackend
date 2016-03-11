@@ -4,9 +4,9 @@ SELECT * FROM restaurantmenus;
 
 SELECT id, name FROM restaurant;
 
-*/
+
 SELECT * FROM menuitems;
-/*
+
 SELECT * FROM fooditem;
 
 

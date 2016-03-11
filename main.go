@@ -12,6 +12,18 @@ import (
     _ "github.com/lib/pq"
 )
 
+type fooditem struct {
+    name string      `json:"name"`
+    description string `json:"description"`
+    price string `json:"price"`
+    thumbnail string `json:"thumbnail"`
+}
+
+type menuinstance struct {
+	name string `json:"name"`
+	//fooditems []fooditem `json:"fooditems"`
+}
+
 var (
     db     *sql.DB = nil
     errd error;
@@ -148,7 +160,7 @@ func getMenu(c *gin.Context) {
 			        return
 				}
 		        
-		        fooditemidrows, err := db.Query("SELECT name FROM fooditem WHERE id = $1", fooditemidint)
+		        fooditemidrows, err := db.Query("SELECT name, description, price, itempicture FROM fooditem WHERE id = $1", fooditemidint)
 			    if err != nil {
 			        c.String(http.StatusInternalServerError,
 			            fmt.Sprintf("Error reading food item name: %q", err))
@@ -158,13 +170,19 @@ func getMenu(c *gin.Context) {
 			    defer fooditemidrows.Close()
 			    for fooditemidrows.Next() {
 			        var fooditemname string
-			        if err := fooditemidrows.Scan(&fooditemname); err != nil {
+					var fooditemdescription string 
+					var fooditemprice string
+					var fooditemthumbnail string
+			        if err := fooditemidrows.Scan(&fooditemname, &fooditemdescription, &fooditemprice, &fooditemthumbnail); err != nil {
 			          c.String(http.StatusInternalServerError,
 			            fmt.Sprintf("Error parsing food item: %q", err))
 			            return
 			        }
 
 			        c.String(http.StatusOK, fmt.Sprintf("Food item name read from DB: %s\n", fooditemname))
+			        c.String(http.StatusOK, fmt.Sprintf("Food item description read from DB: %s\n", fooditemdescription))
+			        c.String(http.StatusOK, fmt.Sprintf("Food item price read from DB: %s\n", fooditemprice))
+			        c.String(http.StatusOK, fmt.Sprintf("Food item thumbnail read from DB: %s\n", fooditemthumbnail))
 
 			    }
 		        //END: Get food item detais
