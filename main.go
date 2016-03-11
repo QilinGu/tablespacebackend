@@ -7,6 +7,7 @@ import (
     "database/sql"
     "fmt"
     "strconv"
+    //"encoding/json"
 
     "github.com/gin-gonic/gin"
     _ "github.com/lib/pq"
@@ -21,7 +22,7 @@ type fooditem struct {
 
 type menuinstance struct {
 	name string `json:"name"`
-	//fooditems []fooditem `json:"fooditems"`
+	fooditems []fooditem `json:"fooditems"`
 }
 
 var (
