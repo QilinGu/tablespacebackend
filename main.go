@@ -118,15 +118,32 @@ func getMenu(c *gin.Context) {
 	            return
 	        }
 
-	        //Get food items associated with current menu id
 	        c.String(http.StatusOK, fmt.Sprintf("Menu name read from DB: %s\n", menuname))
 
+	        //START: Get food items associated with current menu id
+	        
+	        menuitemsrows, err := db.Query("SELECT foodid FROM menuitems WHERE menuid = $1", menuidint)
+		    if err != nil {
+		        c.String(http.StatusInternalServerError,
+		            fmt.Sprintf("Error reading menu: %q", err))
+		        return
+		    }
+
+		    defer menuitemsrows.Close()
+		    for menuitemsrows.Next() {
+		        var fooditemid string
+		        if err := menuidrows.Scan(&fooditemid); err != nil {
+		          c.String(http.StatusInternalServerError,
+		            fmt.Sprintf("Error scanning for menu items: %q", err))
+		            return
+		        }
+		        
+		        c.String(http.StatusOK, fmt.Sprintf("Food item id read from DB: %s\n", fooditemid))
+
+		    }
+	        //END: Get food items associated with current menu id
 	    } 
 	    //END: Get menus associated with previous menu ids
-        
-
-        //Get food items associated with current menu id
-   
-
+       
     }
 }
