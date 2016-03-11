@@ -38,6 +38,7 @@ func main() {
        
     })
 
+    //Test endpoint
     router.GET("/welcome/:retrievedname", func(c *gin.Context) {
     	name := c.Param("retrievedname")
         c.String(http.StatusOK, "Hello %s\n\n", name)
@@ -45,14 +46,10 @@ func main() {
        
     })
 
+    //If http request is for menu data, call getmenu function
     router.GET("/menus/:restaurantid", getMenu)
 
     router.Run(":" + port)
-
-	 //If http request is for menu data
-	 	//Get menu ids associated with restaurant
-	 		//Get menus associated with previous menu ids
-	 			//Get food items associated with current menu id
 
 	 //Generate array of menus
 	 //Convert array into json
@@ -78,21 +75,27 @@ func getMenu(c *gin.Context) {
             fmt.Sprintf("Error with restaurant id input: %q", err))
         return
 	}
-	rows, err := db.Query("SELECT name FROM restaurant WHERE id = $1", restaurantid)
+	//Get menu ids associated with restaurant
+	restaurantidrows, err := db.Query("SELECT menuid FROM restaurantmenus WHERE id = $1", restaurantid)
     if err != nil {
         c.String(http.StatusInternalServerError,
             fmt.Sprintf("Error reading restaurant: %q", err))
         return
     }
 
-    defer rows.Close()
-    for rows.Next() {
-        var name string
-        if err := rows.Scan(&name); err != nil {
+    defer restaurantidrows.Close()
+    for restaurantidrows.Next() {
+        var menuid id
+        if err := restaurantidrows.Scan(&menuid); err != nil {
           c.String(http.StatusInternalServerError,
             fmt.Sprintf("Error scanning menus: %q", err))
             return
         }
-        c.String(http.StatusOK, fmt.Sprintf("Read from DB: %s\n", name))
+
+        //Get menus associated with previous menu ids
+
+        //Get food items associated with current menu id
+        c.String(http.StatusOK, fmt.Sprintf("Read from DB: %s\n", string(menuid))
+
     }
 }
