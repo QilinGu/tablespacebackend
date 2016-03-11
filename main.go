@@ -60,7 +60,7 @@ func main() {
     })
 
     //If http request is for menu data, call getmenu function
-    router.GET("/menus/:restaurantid", getMenu)
+    router.GET("/restaurants/:restaurantid", getMenu)
 
     router.Run(":" + port)
 
