@@ -192,6 +192,7 @@ func getMenu(c *gin.Context) {
 
 			        fooditeminstance := Fooditem{name: fooditemname, description: fooditemdescription, price: fooditemprice, thumbnail: fooditemthumbnail}
 			        jsonfooditeminstance, _ := json.Marshal(fooditeminstance)
+			        c.String(http.StatusOK, fmt.Sprintf("Food item json instance: %s\n", jsonfooditeminstance))
 			        foodmenuinstance.fooditems = append(foodmenuinstance.fooditems, jsonfooditeminstance)
 			    	
 			    }
@@ -200,6 +201,7 @@ func getMenu(c *gin.Context) {
 		    }
 	        //END: Get food items associated with current menu id
 	        jsonfoodmenuinstance, _ := json.Marshal(foodmenuinstance)
+	        c.String(http.StatusOK, fmt.Sprintf("Food menu json instance: %s\n", jsonfoodmenuinstance))
 	        menus = append(menus, jsonfoodmenuinstance)
 	    } 
 	    //END: Get menus associated with previous menu ids
