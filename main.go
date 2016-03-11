@@ -104,7 +104,7 @@ func getMenu(c *gin.Context) {
             return
         }
 
-		c.String(http.StatusOK, fmt.Sprintf("Menu id read from DB: %s\n", menuid))
+		c.String(http.StatusOK, fmt.Sprintf("  Menu id read from DB: %s\n", menuid))
 
 		//Start: Get menus associated with previous menu ids
 		menuidint, err := strconv.ParseInt(menuid, 0, 64)
@@ -130,7 +130,7 @@ func getMenu(c *gin.Context) {
 	            return
 	        }
 
-	        c.String(http.StatusOK, fmt.Sprintf("Menu name read from DB: %s\n", menuname))
+	        c.String(http.StatusOK, fmt.Sprintf("   Menu name read from DB: %s\n", menuname))
 
 	        //START: Get food items associated with current menu id
 	        
@@ -150,7 +150,7 @@ func getMenu(c *gin.Context) {
 		            return
 		        }
 		        
-		        c.String(http.StatusOK, fmt.Sprintf("Food item id read from DB: %s\n", fooditemid))
+		        c.String(http.StatusOK, fmt.Sprintf("    Food item id read from DB: %s\n", fooditemid))
 
 		        //START: Get food item detais 
 		        fooditemidint, err := strconv.ParseInt(fooditemid, 0, 64)
@@ -179,10 +179,10 @@ func getMenu(c *gin.Context) {
 			            return
 			        }
 
-			        c.String(http.StatusOK, fmt.Sprintf("Food item name read from DB: %s\n", fooditemname))
-			        c.String(http.StatusOK, fmt.Sprintf("Food item description read from DB: %s\n", fooditemdescription))
-			        c.String(http.StatusOK, fmt.Sprintf("Food item price read from DB: %s\n", fooditemprice))
-			        c.String(http.StatusOK, fmt.Sprintf("Food item thumbnail read from DB: %s\n", fooditemthumbnail))
+			        c.String(http.StatusOK, fmt.Sprintf("     Food item name read from DB: %s\n", fooditemname))
+			        c.String(http.StatusOK, fmt.Sprintf("     Food item description read from DB: %s\n", fooditemdescription))
+			        c.String(http.StatusOK, fmt.Sprintf("     Food item price read from DB: %s\n", fooditemprice))
+			        c.String(http.StatusOK, fmt.Sprintf("     Food item thumbnail read from DB: %s\n", fooditemthumbnail))
 
 			    }
 		        //END: Get food item detais
