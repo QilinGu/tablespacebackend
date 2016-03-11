@@ -78,7 +78,7 @@ func getMenu(c *gin.Context) {
             fmt.Sprintf("Error with restaurant id input: %q", err))
         return
 	}
-	rows, err := db.Query("SELECT menuid FROM restaurant WHERE restaurantid = $1", restaurantid)
+	rows, err := db.Query("SELECT * FROM restaurant WHERE restaurantid = $1", restaurantid)
     if err != nil {
         c.String(http.StatusInternalServerError,
             fmt.Sprintf("Error reading restaurant: %q", err))
@@ -87,15 +87,12 @@ func getMenu(c *gin.Context) {
 
     defer rows.Close()
     for rows.Next() {
-        var menuid string
-        if err := rows.Scan(&menuid); err != nil {
+        var row string
+        if err := rows.Scan(&row); err != nil {
           c.String(http.StatusInternalServerError,
-            fmt.Sprintf("Error scanning ticks: %q", err))
+            fmt.Sprintf("Error scanning menus: %q", err))
             return
         }
-        c.String(http.StatusOK, fmt.Sprintf("Read from DB: %s\n", menuid))
-    }
-    if err := rows.Err(); err != nil {
-            log.Fatal(err)
+        c.String(http.StatusOK, fmt.Sprintf("Read from DB: %s\n", row))
     }
 }
