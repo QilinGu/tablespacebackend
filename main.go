@@ -76,7 +76,7 @@ func getMenu(c *gin.Context) {
         return
 	}
 	//Get menu ids associated with restaurant
-	restaurantidrows, err := db.Query("SELECT menuid FROM restaurantmenus WHERE id = $1", restaurantid)
+	restaurantidrows, err := db.Query("SELECT menuid FROM restaurantmenus WHERE restaurantid = $1", restaurantid)
     if err != nil {
         c.String(http.StatusInternalServerError,
             fmt.Sprintf("Error reading restaurant: %q", err))
