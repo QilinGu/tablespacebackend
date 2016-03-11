@@ -78,7 +78,7 @@ func getMenu(c *gin.Context) {
             fmt.Sprintf("Error with restaurant id input: %q", err))
         return
 	}
-	rows, err := db.Query("SELECT * FROM restaurant WHERE restaurantid = $1", restaurantid)
+	rows, err := db.Query("SELECT * FROM restaurant WHERE id = $1", restaurantid)
     if err != nil {
         c.String(http.StatusInternalServerError,
             fmt.Sprintf("Error reading restaurant: %q", err))
