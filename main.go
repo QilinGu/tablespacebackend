@@ -7,7 +7,7 @@ import (
     "database/sql"
     "fmt"
     "strconv"
-    //"encoding/json"
+    "encoding/json"
 
     "github.com/gin-gonic/gin"
     _ "github.com/lib/pq"
@@ -191,7 +191,9 @@ func getMenu(c *gin.Context) {
 			        c.String(http.StatusOK, fmt.Sprintf("     Food item thumbnail read from DB: %s\n", fooditemthumbnail))
 
 			        fooditeminstance := Fooditem{name: fooditemname, description: fooditemdescription, price: fooditemprice, thumbnail: fooditemthumbnail}
+			        //jsonfooditeminstance, _ := res2B, _ := json.Marshal(fooditeminstance)
 			        foodmenuinstance.fooditems = append(foodmenuinstance.fooditems, fooditeminstance)
+			    	
 			    }
 		        //END: Get food item detais
 
@@ -200,6 +202,7 @@ func getMenu(c *gin.Context) {
 	        menus = append(menus, foodmenuinstance)
 	    } 
 	    //END: Get menus associated with previous menu ids
-	    c.String(http.StatusOK, "\n\nList of JSON menus: %s\n", menus)
+	    menusjson, _ := json.Marshal(menus)
+	    c.String(http.StatusOK, "\n\nList of JSON menus: %s\n", menusjson)
     }
 }
