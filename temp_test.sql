@@ -1,11 +1,9 @@
 ﻿SELECT * FROM d4smpakov9rj44.information_schema.tables WHERE table_schema = 'public';
 
-SELECT * FROM fooditem;
-
-SELECT * from menuitems;
-
-SELECT * FROM restaurant;
+SELECT * FROM restaurantmenus;
 /*
+SELECT id, name FROM restaurant;
+
 SELECT * FROM menuitems;
 
 SELECT * FROM fooditem;
