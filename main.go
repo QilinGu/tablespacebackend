@@ -22,7 +22,7 @@ type Fooditem struct {
 
 type Menuinstance struct {
 	name string `json:"name"`
-	fooditems []Fooditem `json:"fooditems"`
+	fooditems []byte `json:"fooditems"`
 }
 
 var (
@@ -191,18 +191,19 @@ func getMenu(c *gin.Context) {
 			        c.String(http.StatusOK, fmt.Sprintf("     Food item thumbnail read from DB: %s\n", fooditemthumbnail))
 
 			        fooditeminstance := Fooditem{name: fooditemname, description: fooditemdescription, price: fooditemprice, thumbnail: fooditemthumbnail}
-			        //jsonfooditeminstance, _ := res2B, _ := json.Marshal(fooditeminstance)
-			        foodmenuinstance.fooditems = append(foodmenuinstance.fooditems, fooditeminstance)
+			        jsonfooditeminstance, _ := json.Marshal(fooditeminstance)
+			        foodmenuinstance.fooditems = append(foodmenuinstance.fooditems, jsonfooditeminstance)
 			    	
 			    }
 		        //END: Get food item detais
 
 		    }
 	        //END: Get food items associated with current menu id
-	        menus = append(menus, foodmenuinstance)
+	        jsonfoodmenuinstance, _ := json.Marshal(foodmenuinstance)
+	        menus = append(menus, jsonfoodmenuinstance)
 	    } 
 	    //END: Get menus associated with previous menu ids
-	    menusjson, _ := json.Marshal(menus)
-	    c.String(http.StatusOK, "\n\nList of JSON menus: %s\n", menusjson)
     }
+    menusjson, _ := json.Marshal(menus)
+	c.String(http.StatusOK, "\n\nList of JSON menus: %s\n", menusjson)
 }
