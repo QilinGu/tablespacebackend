@@ -93,6 +93,6 @@ func getMenu(c *gin.Context) {
             fmt.Sprintf("Error scanning menus: %q", err))
             return
         }
-        c.String(http.StatusOK, fmt.Sprintf("Read from DB: %s\n", row))
+        c.String(http.StatusOK, fmt.Sprintf("Read from DB: %s\n", name))
     }
 }
