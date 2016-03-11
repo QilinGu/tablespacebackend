@@ -132,7 +132,7 @@ func getMenu(c *gin.Context) {
 		    defer menuitemsrows.Close()
 		    for menuitemsrows.Next() {
 		        var fooditemid string
-		        if err := menuidrows.Scan(&fooditemid); err != nil {
+		        if err := menuitemsrows.Scan(&fooditemid); err != nil {
 		          c.String(http.StatusInternalServerError,
 		            fmt.Sprintf("Error scanning for menu items: %q", err))
 		            return
