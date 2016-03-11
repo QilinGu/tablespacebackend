@@ -140,6 +140,35 @@ func getMenu(c *gin.Context) {
 		        
 		        c.String(http.StatusOK, fmt.Sprintf("Food item id read from DB: %s\n", fooditemid))
 
+		        //START: Get food item detais 
+		        fooditemidint, err := strconv.ParseInt(fooditemid, 0, 64)
+				if err != nil{
+					c.String(http.StatusInternalServerError,
+			            fmt.Sprintf("Error with getting menu id: %q", err))
+			        return
+				}
+		        
+		        fooditemidrows, err := db.Query("SELECT name FROM fooditem WHERE id = $1", fooditemidint)
+			    if err != nil {
+			        c.String(http.StatusInternalServerError,
+			            fmt.Sprintf("Error reading food item name: %q", err))
+			        return
+			    }
+
+			    defer fooditemidrows.Close()
+			    for fooditemidrows.Next() {
+			        var fooditemname string
+			        if err := fooditemidrows.Scan(&fooditemname); err != nil {
+			          c.String(http.StatusInternalServerError,
+			            fmt.Sprintf("Error parsing food item: %q", err))
+			            return
+			        }
+
+			        c.String(http.StatusOK, fmt.Sprintf("Food item name read from DB: %s\n", fooditemname))
+
+			    }
+		        //END: Get food item detais
+
 		    }
 	        //END: Get food items associated with current menu id
 	    } 
