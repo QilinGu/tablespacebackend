@@ -40,8 +40,8 @@ func main() {
 
     router.GET("/welcome/:retrievedname", func(c *gin.Context) {
     	name := c.Param("retrievedname")
-        c.String(http.StatusOK, "Hello %s\n", name)
-        c.String(http.StatusOK, string([]byte("You've reached the hello directory of Tablespace!")))
+        c.String(http.StatusOK, "Hello %s\n\n", name)
+        c.String(http.StatusOK, string([]byte("You've reached the test directory of Tablespace!")))
        
     })
 
