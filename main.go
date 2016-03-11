@@ -93,7 +93,7 @@ func getMenu(c *gin.Context) {
         }
 
 		c.String(http.StatusOK, fmt.Sprintf("Menu id read from DB: %s\n", menuid))
-		
+
 		//Start: Get menus associated with previous menu ids
 		menuidint, err := strconv.ParseInt(menuid, 0, 64)
 		if err != nil{
@@ -102,10 +102,10 @@ func getMenu(c *gin.Context) {
 	        return
 		}
         
-        menuidrows, err := db.Query("SELECT name FROM menu WHERE menuid = $1", menuidint)
+        menuidrows, err := db.Query("SELECT name FROM menu WHERE id = $1", menuidint)
 	    if err != nil {
 	        c.String(http.StatusInternalServerError,
-	            fmt.Sprintf("Error reading restaurant: %q", err))
+	            fmt.Sprintf("Error reading menu: %q", err))
 	        return
 	    }
 
