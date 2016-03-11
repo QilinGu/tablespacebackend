@@ -22,13 +22,13 @@ type Fooditem struct {
 
 type Menuinstance struct {
 	name string `json:"name"`
-	fooditems []byte `json:"fooditems"`
+	fooditems [][]byte `json:"fooditems"`
 }
 
 var (
     db     *sql.DB = nil
     errd error;
-    menus []Menuinstance
+    menus [][]byte
 )
 
 func main() {
