@@ -13,21 +13,22 @@ import (
     _ "github.com/lib/pq"
 )
 
-type fooditem struct {
+type Fooditem struct {
     name string      `json:"name"`
     description string `json:"description"`
     price string `json:"price"`
     thumbnail string `json:"thumbnail"`
 }
 
-type menuinstance struct {
+type Menuinstance struct {
 	name string `json:"name"`
-	fooditems []fooditem `json:"fooditems"`
+	fooditems []Fooditem `json:"fooditems"`
 }
 
 var (
     db     *sql.DB = nil
     errd error;
+    menus []Menuinstance
 )
 
 func main() {
@@ -81,6 +82,8 @@ func connectToDb(){
 
 func getMenu(c *gin.Context) {
 
+
+
 	//Gets restaurant id from parameter in path ("<servername>/menus/restaurantid")
 	restaurantid,err := strconv.ParseInt(c.Param("restaurantid"), 0, 64)
 	if err != nil{
@@ -132,6 +135,8 @@ func getMenu(c *gin.Context) {
 	        }
 
 	        c.String(http.StatusOK, fmt.Sprintf("   Menu name read from DB: %s\n", menuname))
+	        foodmenuinstance := Menuinstance{name: menuname, fooditems: nil}
+
 
 	        //START: Get food items associated with current menu id
 	        
@@ -185,13 +190,15 @@ func getMenu(c *gin.Context) {
 			        c.String(http.StatusOK, fmt.Sprintf("     Food item price read from DB: %s\n", fooditemprice))
 			        c.String(http.StatusOK, fmt.Sprintf("     Food item thumbnail read from DB: %s\n", fooditemthumbnail))
 
+			        fooditeminstance := Fooditem{name: fooditemname, description: fooditemdescription, price: fooditemprice, thumbnail: fooditemthumbnail}
+			        foodmenuinstance.fooditems = append(foodmenuinstance.fooditems, fooditeminstance)
 			    }
 		        //END: Get food item detais
 
 		    }
 	        //END: Get food items associated with current menu id
+	        menus = append(menus, foodmenuinstance)
 	    } 
 	    //END: Get menus associated with previous menu ids
-       
     }
 }
