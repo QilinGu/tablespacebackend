@@ -200,5 +200,6 @@ func getMenu(c *gin.Context) {
 	        menus = append(menus, foodmenuinstance)
 	    } 
 	    //END: Get menus associated with previous menu ids
+	    c.String(http.StatusOK, "\n\nList of JSON menus: %s\n", menus)
     }
 }
